@@ -2,5 +2,5 @@ export default {
   tabWidth: 2,
   semi: false,
   singleQuote: true,
-  trailingComma: "es5",
-};
+  trailingComma: 'es5',
+}
