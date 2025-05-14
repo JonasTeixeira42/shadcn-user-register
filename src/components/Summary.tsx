@@ -32,7 +32,9 @@ function SummaryCard({ title, description }: SummaryCardProps) {
   return (
     <article>
       <Heading size="tiny">{title}</Heading>
-      <strong className="font-noto text-3xl font-normal">{description}</strong>
+      <strong className="font-noto text-light-black text-3xl font-normal">
+        {description}
+      </strong>
     </article>
   )
 }

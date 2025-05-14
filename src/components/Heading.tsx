@@ -9,11 +9,11 @@ interface HeadingProps extends HeadingVariants {
   as?: Headings
 }
 
-const headingVariants = cva('text-heading', {
+const headingVariants = cva('text-light-black', {
   variants: {
     size: {
       default: 'font-noto text-3xl',
-      tiny: 'text-xs text-heading-tiny font-normal',
+      tiny: 'text-xs text-light-grey font-normal',
     },
   },
   defaultVariants: {
