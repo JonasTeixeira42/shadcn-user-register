@@ -12,7 +12,7 @@ interface UserSidebarDropdown {
 
 function UserSidebarDropdown({ companyName }: UserSidebarDropdown) {
   return (
-    <SidebarGroup>
+    <SidebarGroup className="mt-2">
       <SidebarGroupContent>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
