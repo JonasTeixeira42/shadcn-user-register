@@ -1,6 +1,6 @@
-export default {
+module.exports = {
   '*.{js,jsx,ts,tsx}': (filenames) => [
     `prettier --write ${filenames.join(' ')}`,
-    `eslint --fix . ${filenames.join(' --file')}`,
+    `pnpm lint --fix . ${filenames.join(' --file')}`,
   ],
 }
