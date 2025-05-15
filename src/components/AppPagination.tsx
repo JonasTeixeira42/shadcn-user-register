@@ -1,4 +1,5 @@
-import { useCallback, type ReactNode } from 'react'
+import { useCallback, useState, type ReactNode } from 'react'
+
 import {
   Pagination,
   PaginationContent,
@@ -16,23 +17,38 @@ import {
   SelectValue,
 } from './ui/select'
 
-export interface PaginationWithLinksProps {
-  pageSizeSelectOptions?: number[]
-  totalCount: number
-  pageSize: number
+interface AppPaginationProps {
   page: number
-  pageSearchParam?: string
+  setPage: (currentPage: number) => void
+  pageSize: number
+  setPageSize: (size: number) => void
+  totalCount: number
+  pageSizeSelectOptions: number[]
+  totalPageCount: number
+  currentItemsCount: number
 }
 
 function AppPagination({
-  pageSizeSelectOptions,
-  pageSize,
-  totalCount,
   page,
-}: PaginationWithLinksProps) {
-  const totalPageCount = Math.ceil(totalCount / pageSize)
-  const currentItemsCount =
-    totalPageCount === page ? totalCount : page * pageSize
+  setPage,
+  pageSize,
+  setPageSize,
+  totalCount,
+  totalPageCount,
+  currentItemsCount,
+  pageSizeSelectOptions,
+}: AppPaginationProps) {
+  const handlePageChange = useCallback(
+    (currentPage: number) => {
+      setPage(currentPage)
+    },
+    [setPage]
+  )
+
+  const handleSizeChange = (size: number) => {
+    setPage(1)
+    setPageSize(size)
+  }
 
   const renderPageNumbers = useCallback(() => {
     const items: ReactNode[] = []
@@ -41,14 +57,14 @@ function AppPagination({
     if (totalPageCount <= maxVisiblePages) {
       for (let i = 1; i <= totalPageCount; i++) {
         items.push(
-          <PaginationItem key={i}>
+          <PaginationItem key={i} onClick={() => handlePageChange(i)}>
             <PaginationLink isActive={page === i}>{i}</PaginationLink>
           </PaginationItem>
         )
       }
     } else {
       items.push(
-        <PaginationItem key={1}>
+        <PaginationItem key={1} onClick={() => handlePageChange(1)}>
           <PaginationLink isActive={page === 1}>1</PaginationLink>
         </PaginationItem>
       )
@@ -66,7 +82,7 @@ function AppPagination({
 
       for (let i = start; i <= end; i++) {
         items.push(
-          <PaginationItem key={i}>
+          <PaginationItem key={i} onClick={() => handlePageChange(i)}>
             <PaginationLink isActive={page === i}>{i}</PaginationLink>
           </PaginationItem>
         )
@@ -81,7 +97,10 @@ function AppPagination({
       }
 
       items.push(
-        <PaginationItem key={totalPageCount}>
+        <PaginationItem
+          key={totalPageCount}
+          onClick={() => handlePageChange(totalPageCount)}
+        >
           <PaginationLink isActive={page === totalPageCount}>
             {totalPageCount}
           </PaginationLink>
@@ -90,7 +109,7 @@ function AppPagination({
     }
 
     return items
-  }, [page, totalPageCount])
+  }, [page, totalPageCount, handlePageChange])
 
   return (
     <div className="flex w-full flex-col items-center justify-between text-center text-sm md:flex-row">
@@ -101,6 +120,7 @@ function AppPagination({
         <PaginationContent className="max-sm:gap-0">
           <PaginationItem>
             <PaginationPrevious
+              onClick={() => setPage(page - 1)}
               aria-disabled={page === 1}
               tabIndex={page === 1 ? -1 : undefined}
               className={
@@ -111,6 +131,7 @@ function AppPagination({
           {renderPageNumbers()}
           <PaginationItem>
             <PaginationNext
+              onClick={() => setPage(page + 1)}
               aria-disabled={page === totalPageCount}
               tabIndex={page === totalPageCount ? -1 : undefined}
               className={
@@ -125,11 +146,9 @@ function AppPagination({
       {!!pageSizeSelectOptions && (
         <div className="flex flex-col gap-4">
           <SelectRowsPerPage
-            options={pageSizeSelectOptions}
-            setPageSize={(a) => {
-              console.log('aaaaaa', a)
-            }}
             pageSize={pageSize}
+            options={pageSizeSelectOptions}
+            setPageSize={handleSizeChange}
           />
         </div>
       )}

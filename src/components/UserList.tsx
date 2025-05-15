@@ -1,4 +1,5 @@
-import { UserCard, type User } from './UserCard'
+import { UserCard } from './UserCard'
+import { User } from '@/domain/user/types/user'
 
 interface UserListProps {
   users: User[]
@@ -6,7 +7,7 @@ interface UserListProps {
 
 function UserList({ users }: UserListProps) {
   return (
-    <section className="mt-5 grid flex-1 gap-2">
+    <section className="mt-5 grid flex-1 gap-2 pb-5">
       {users.map((user) => (
         <UserCard key={user.id} user={user} />
       ))}

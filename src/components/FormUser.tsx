@@ -20,7 +20,8 @@ import { cpfMask } from '@/utils/masks/cpfMask'
 import { rgMask } from '@/utils/masks/rgMask'
 import { Switch } from './ui/switch'
 import { Checkbox } from './ui/checkbox'
-import { SheetClose, SheetFooter } from './ui/sheet'
+import { useUser } from '@/hooks/useUser'
+import { User } from '@/domain/user/types/user'
 
 const FormSchema = z.object({
   name: z
@@ -53,22 +54,53 @@ const FormSchema = z.object({
     })
     .min(10, { message: 'Formato inválido' })
     .max(10, { message: 'Formato inválido' }),
-  active: z.boolean().optional(),
-  whatsapp: z.boolean().optional(),
+  active: z.boolean(),
+  whatsapp: z.boolean(),
 })
 
-function FormUser() {
-  const form = useForm<z.infer<typeof FormSchema>>({
+export type UserSchema = z.infer<typeof FormSchema>
+
+interface FormUserProps {
+  user?: User
+  onSubmitForm: () => void
+}
+
+const defaultValues: UserSchema = {
+  name: '',
+  email: '',
+  phone: '',
+  cpf: '',
+  rg: '',
+  active: false,
+  whatsapp: false,
+}
+
+function FormUser({ user, onSubmitForm }: FormUserProps) {
+  const { addUser, updateUser } = useUser()
+
+  const form = useForm<UserSchema>({
     resolver: zodResolver(FormSchema),
+    defaultValues: user ?? defaultValues,
   })
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-    console.log('submit')
-    toast('You submitted the following values:', {
-      description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-        </pre>
+  function onSubmit(data: UserSchema) {
+    user ? updateUser(user.id, data) : addUser(data)
+
+    onSubmitForm()
+
+    toast('', {
+      description: 'Usuário adicionado com sucesso!',
+      action: (
+        <div className="ml-auto">
+          <Button
+            rounded="circle"
+            weight="medium"
+            variant="outline"
+            onClick={() => toast.dismiss()}
+          >
+            Fechar
+          </Button>
+        </div>
       ),
     })
   }
@@ -88,7 +120,7 @@ function FormUser() {
               <FormItem>
                 <FormLabel>Nome</FormLabel>
                 <FormControl>
-                  <Input placeholder="shadcn" {...field} />
+                  <Input placeholder="Digite o nome" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -101,7 +133,7 @@ function FormUser() {
               <FormItem>
                 <FormLabel>E-mail</FormLabel>
                 <FormControl>
-                  <Input placeholder="shadcn" {...field} />
+                  <Input placeholder="Digite o e-mail" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -168,7 +200,7 @@ function FormUser() {
                       form.setValue('rg', rgMask(e.target.value))
                     }
                   >
-                    <Input placeholder="Informe o CPF" {...field} />
+                    <Input placeholder="Informe o RG" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -199,18 +231,16 @@ function FormUser() {
           />
         </div>
         <div className="flex flex-col gap-3 md:flex-row md:justify-end">
-          <SheetFooter>
-            <SheetClose asChild>
-              <Button
-                variant="outline"
-                size="lg"
-                type="submit"
-                rounded="circle"
-              >
-                Cancelar
-              </Button>
-            </SheetClose>
-          </SheetFooter>
+          <Button
+            variant="outline"
+            size="lg"
+            type="submit"
+            rounded="circle"
+            onClick={onSubmitForm}
+          >
+            Cancelar
+          </Button>
+
           <Button rounded="circle" size="lg" type="submit">
             Adicionar
           </Button>

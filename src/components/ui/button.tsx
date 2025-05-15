@@ -30,6 +30,9 @@ const buttonVariants = cva(
       rounded: {
         circle: 'rounded-full py-3',
       },
+      weight: {
+        medium: 'font-medium',
+      },
     },
     defaultVariants: {
       variant: 'default',
@@ -42,6 +45,7 @@ function Button({
   className,
   variant,
   size,
+  weight,
   asChild = false,
   rounded,
   ...props
@@ -54,7 +58,9 @@ function Button({
   return (
     <Comp
       data-slot="button"
-      className={cn(buttonVariants({ variant, size, rounded, className }))}
+      className={cn(
+        buttonVariants({ variant, size, weight, rounded, className })
+      )}
       {...props}
     />
   )

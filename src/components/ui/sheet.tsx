@@ -92,7 +92,7 @@ function SheetHeader({
         <Button variant="outline" size="icon">
           <XIcon />
         </Button>
-        <span className="sr-only">Close</span>
+        <span className="sr-only">fechar formulário</span>
       </SheetPrimitive.Close>
     </div>
   )

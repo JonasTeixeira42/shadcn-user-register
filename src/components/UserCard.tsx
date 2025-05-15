@@ -1,30 +1,20 @@
 import { ReactElement, ReactNode } from 'react'
-import { Calendar, Clock3, EllipsisVertical, Tag, User } from 'lucide-react'
+import { Calendar, Clock3, Tag, User } from 'lucide-react'
 
 import { Badge } from './ui/badge'
-import { Button } from './ui/button'
 import { AppAvatar } from './AppAvatar'
+import { User as UserType } from '@/domain/user/types/user'
 import { customFormat } from '@/utils/date/customFormat'
 import { getInitialLetters } from '@/utils/formatters/getAvatarFallback'
-
-interface User {
-  id: string
-  name: string
-  age: number
-  gender: string
-  date: string
-  onlineTime: string
-  type: string
-  isActive: boolean
-}
+import { EditButton } from './EditButton'
 
 interface UserCardProps {
-  user: User
+  user: UserType
 }
 
-function UserCard({
-  user: { name, age, gender, date, onlineTime, type, isActive },
-}: UserCardProps) {
+function UserCard({ user }: UserCardProps) {
+  const { name, age, gender, date, onlineTime, type, active } = user
+
   return (
     <article className="text-light-black flex h-auto items-center rounded-xl border p-3">
       <AppAvatar className="mr-3 size-14" fallback={getInitialLetters(name)} />
@@ -54,15 +44,15 @@ function UserCard({
         </div>
       </div>
 
-      {isActive ? (
+      {active ? (
         <Badge variant="default">Ativo</Badge>
       ) : (
         <Badge variant="secondary">ativo</Badge>
       )}
 
-      <Button variant="ghost" size="icon" className="ml-3">
-        <EllipsisVertical />
-      </Button>
+      <div className="ml-3">
+        <EditButton user={user} />
+      </div>
     </article>
   )
 }

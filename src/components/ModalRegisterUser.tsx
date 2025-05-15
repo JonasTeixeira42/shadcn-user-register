@@ -1,6 +1,4 @@
-import { Plus } from 'lucide-react'
-
-import { Button } from '@/components/ui/button'
+import { ReactNode } from 'react'
 
 import {
   Sheet,
@@ -10,16 +8,24 @@ import {
   SheetTrigger,
 } from '@/components/ui/sheet'
 import { FormUser } from './FormUser'
+import { User } from '@/domain/user/types/user'
 
-function ModalRegisterUser() {
+interface ModalRegisterUserProps {
+  user?: User
+  open: boolean
+  trigger?: ReactNode
+  toggleOpen: (open: boolean) => void
+}
+
+function ModalRegisterUser({
+  user,
+  open,
+  trigger,
+  toggleOpen,
+}: ModalRegisterUserProps) {
   return (
-    <Sheet>
-      <SheetTrigger asChild>
-        <Button rounded="circle" size="lg" className="w-full md:w-auto">
-          <Plus />
-          <span>Adicionar</span>
-        </Button>
-      </SheetTrigger>
+    <Sheet open={open} onOpenChange={toggleOpen}>
+      {!!trigger && <SheetTrigger asChild>{trigger}</SheetTrigger>}
       <SheetContent>
         <SheetHeader>
           <SheetTitle className="font-noto text-2xl font-normal">
@@ -27,7 +33,7 @@ function ModalRegisterUser() {
           </SheetTitle>
         </SheetHeader>
         <div className="flex-1">
-          <FormUser />
+          <FormUser user={user} onSubmitForm={() => toggleOpen(false)} />
         </div>
       </SheetContent>
     </Sheet>
