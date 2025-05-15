@@ -29,7 +29,7 @@ function UserCard({
     <article className="text-light-black flex h-auto items-center rounded-xl border p-3">
       <AppAvatar className="mr-3 size-14" fallback={getInitialLetters(name)} />
       <div className="text-light-grey flex-1 text-xs [&_svg]:size-3">
-        <div className="flex items-center">
+        <div className="flex flex-col items-start md:flex-row md:items-center">
           <h2 className="text-light-black mr-3 text-sm">{name}</h2>
           <div className="flex items-center gap-1">
             <User className="size-3" />
@@ -39,7 +39,7 @@ function UserCard({
           </div>
         </div>
 
-        <div className="mt-2 flex gap-3">
+        <div className="mt-2 flex flex-col gap-3 md:flex-row">
           <Statistic icon={<Calendar />}>
             <time dateTime={date}>
               {customFormat(date, 'dd/MM/yyyy - HH:mmaaa')}
