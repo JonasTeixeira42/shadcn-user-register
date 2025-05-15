@@ -1,36 +1,37 @@
 import { Activity, User, FileCheck, Settings } from 'lucide-react'
-
-const menus = [
+const mainMenu = [
   {
-    title: 'Menu',
-    items: [
-      {
-        title: 'Dashboard',
-        url: '#',
-        icon: Activity,
-      },
-      {
-        title: 'Usuários',
-        url: '#',
-        icon: User,
-      },
-      {
-        title: 'Documentos',
-        url: '#',
-        icon: FileCheck,
-      },
-    ],
+    title: 'Dashboard',
+    url: '#',
+    icon: Activity,
+    isActive: false,
   },
   {
-    title: 'Configurações',
-    items: [
-      {
-        title: 'Geral',
-        url: '#',
-        icon: Settings,
-      },
-    ],
+    title: 'Usuários',
+    url: '#',
+    icon: User,
+    isActive: true,
+  },
+  {
+    title: 'Documentos',
+    url: '#',
+    icon: FileCheck,
+    isActive: false,
   },
 ]
 
-export { menus }
+const settingsMenu = [
+  {
+    title: 'Geral',
+    url: '#',
+    icon: Settings,
+    isActive: false,
+  },
+]
+
+const allMenus = {
+  main: mainMenu,
+  settings: settingsMenu,
+}
+
+export { allMenus }
