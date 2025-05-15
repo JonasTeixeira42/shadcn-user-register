@@ -234,7 +234,7 @@ function FormUser({ user, onSubmitForm }: FormUserProps) {
           <Button
             variant="outline"
             size="lg"
-            type="submit"
+            type="button"
             rounded="circle"
             onClick={onSubmitForm}
           >
