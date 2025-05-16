@@ -51,8 +51,8 @@ const FormSchema = z.object({
     .string({
       required_error: 'Campo rg é obrigatório',
     })
-    .min(10, { message: 'Formato inválido' })
-    .max(10, { message: 'Formato inválido' }),
+    .min(6, { message: 'Formato inválido' })
+    .max(12, { message: 'Formato inválido' }),
   active: z.boolean(),
   whatsapp: z.boolean(),
 })
