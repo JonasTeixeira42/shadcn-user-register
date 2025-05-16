@@ -17,7 +17,6 @@ import { Button } from './ui/button'
 import { phoneMask } from '@/utils/masks/phoneMask'
 import { ChangeEvent } from 'react'
 import { cpfMask } from '@/utils/masks/cpfMask'
-import { rgMask } from '@/utils/masks/rgMask'
 import { Switch } from './ui/switch'
 import { Checkbox } from './ui/checkbox'
 import { useUser } from '@/hooks/useUser'
@@ -195,11 +194,7 @@ function FormUser({ user, onSubmitForm }: FormUserProps) {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>RG</FormLabel>
-                  <FormControl
-                    onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                      form.setValue('rg', rgMask(e.target.value))
-                    }
-                  >
+                  <FormControl>
                     <Input placeholder="Informe o RG" {...field} />
                   </FormControl>
                   <FormMessage />
